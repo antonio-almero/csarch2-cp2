@@ -35,7 +35,7 @@ export function VariableSlider({
               top: 3,
               width: 2,
               height: 14,
-              background: "#000",
+              background: "#3d3d8a",
               transform: "translateX(-1px)",
             }}
           />
@@ -51,7 +51,7 @@ export function VariableSlider({
             setIndex(i);
             onChange?.(values[i]);
           }}
-          style={{ position: "absolute", left: 0, top: 0, width: "100%", margin: 0, accentColor: "#000" }}
+          style={{ position: "absolute", left: 0, top: 0, width: "100%", margin: 0, accentColor: "#000080" }}
         />
       </div>
 
