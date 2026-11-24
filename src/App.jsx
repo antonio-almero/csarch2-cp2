@@ -38,6 +38,7 @@ export default function App() {
   }
 
   // Steps come from ACCESSES (src/utils/accesses.ts). Final Snapshot applies every step at once.
+  // const accesses; = call the function here that will return the built access table 
   const totalSteps = submitted ? ACCESSES.length : 0
   const shownSteps = submitted?.selectedTrace === "Step-By-Step" ? step : totalSteps
   const shownAccesses = ACCESSES.slice(0, shownSteps)
