@@ -9,10 +9,10 @@ export function Header(){
                         <h2 className = "font-bold">Group 6</h2>
                     </div>
                     <div className="text-xs items-center justify-center text-white flex flex-row gap-2">
-                        <h2><span className="font-bold">Almero</span>,  Antonio Alvaro -</h2>
-                        <h2><span className="font-bold">Chua</span>, Jasper -</h2>
-                        <h2><span className="font-bold">Marquez</span>, John Thomas -</h2>
-                        <h2><span className="font-bold">Panlilio</span>, Yuan Miguel -</h2>
+                        <h2><span className="font-bold">Almero</span>,  Antonio Alvaro •</h2>
+                        <h2><span className="font-bold">Chua</span>, Jasper •</h2>
+                        <h2><span className="font-bold">Marquez</span>, John Thomas •</h2>
+                        <h2><span className="font-bold">Panlilio</span>, Yuan Miguel •</h2>
                         <h2><span className="font-bold">So</span>, Nigel Henry</h2>
                     </div>
                 </div>

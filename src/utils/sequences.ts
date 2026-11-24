@@ -1,23 +1,26 @@
-// Test case generators from the spec. n = number of cache blocks.
 const MEMORY_BLOCKS = 1024;
 
 const range = (from: number, to: number) =>
   Array.from({ length: to - from + 1 }, (_, i) => from + i);
 
+// generates the sequential pattern
 export function sequential(n: number): number[] {
   const once = range(0, 2 * n - 1);
   return [...once, ...once];
 }
 
+// generates the midrepeat pattern
 export function midRepeat(n: number): number[] {
   const runs = [range(0, n - 1), range(0, 2 * n - 1), range(0, 2 * n - 1)];
   return [...runs.flat(), ...runs.map((r) => [...r].reverse()).flat()];
 }
 
+// generates the random memory accesses
 export function random(count = 64): number[] {
   return Array.from({ length: count }, () => Math.floor(Math.random() * MEMORY_BLOCKS));
 }
 
+// 
 export function parseCustom(text: string): number[] {
   return text
     .split(/[\s,]+/)
@@ -26,7 +29,7 @@ export function parseCustom(text: string): number[] {
     .filter((v) => Number.isInteger(v) && v >= 0 && v < MEMORY_BLOCKS);
 }
 
-// Entries the custom input can't use: numbers outside 0..1023, and things that aren't whole numbers.
+// parses the invalid inputs that are out of range or not numbers
 export function findInvalidCustom(text: string): { outOfRange: string[]; notNumbers: string[] } {
   const tokens = text.split(/[\s,]+/).filter(Boolean);
   const outOfRange: string[] = [];
