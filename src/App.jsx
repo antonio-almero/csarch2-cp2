@@ -60,7 +60,7 @@ export default function App() {
     <>
       <Header/>
       <main className="flex flex-col gap-8 p-14">
-        <div className="flex flex-row justify-between items-center w-full gap-2">
+        <div className="flex flex-row justify-between items-center w-full gap-2 rounded-md border-[#000080]/25 border-2 p-4">
           <div className="gap-4 flex flex-row justify-between items-center w-full">
             <VariableSlider label="Block Size" onChange={changed(setBlockSize)} />
             <VariableSlider label="# Cache Blocks" onChange={changed(setNumBlocks)} />
@@ -105,10 +105,14 @@ export default function App() {
           </div>
         </div>
 
-        
+          {!submitted && (
+            <div className="flex flex-row justify-center items-center w-full gap-2">
+              <h2 className="text-xl justify-between items-center font-semibold text-black/50">Please enter inputs</h2>
+            </div>
+          )}
           {submitted && (
-            <section className="flex flex-row gap-1 rounded border border-black p-4 border-2">
-              <div className="flex flex-col flex-[2] min-w-0 justify-start p-2 gap-2 border-2"> { /* BLOCKS */}
+            <section className="flex flex-row gap-1 p-4">
+              <div className="flex flex-col flex-[2] min-w-0 justify-start p-2 gap-2 rounded-md border-[#000080]/25 border-2 p-4"> { /* BLOCKS */}
                 {submitted.selectedTrace === "Step-By-Step" && (
                   <div className="flex flex-row items-center justify-end gap-4">
                     <span className="text-sm">Step {step} of {totalSteps}</span>
@@ -135,7 +139,7 @@ export default function App() {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 border-2"> { /* TEXT LOG */}
+              <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 rounded-md border-[#000080]/25 border-2 p-4"> { /* TEXT LOG */}
                 <h2 className="text-sm font-semibold">Trace Log</h2>
                 <div className="relative min-h-0 flex-1">
                   <div className="absolute inset-0 flex flex-col gap-1 overflow-y-auto">
@@ -146,7 +150,7 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 border-2"> { /* SUBMITTED */}
+              <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 rounded-md border-[#000080]/25 border-2 p-4"> { /* SUBMITTED */}
                 <h2 className="text-sm font-semibold">Submitted Inputs</h2>
                 <p className="text-xs">Block Size: {submitted.blockSize} words</p>
                 <p className="text-xs"># Cache Blocks: {submitted.numBlocks}</p>
