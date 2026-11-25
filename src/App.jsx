@@ -8,7 +8,7 @@ import { CacheBlocks } from "./components/CacheBlocks"
 import { MemoryBlocks, hexWord } from "./components/MemoryBlocks"
 import { AccessArrow } from "./components/AccessArrow"
 import { computeStats } from "./utils/stats"
-import { ACCESSES } from "./utils/accesses" // TO DO: REPLACE THIS ACCESSES DATA WITH THE ACTUAL OUTPUT BASED FROM THE INPUTS OF THE USERS FOR BACKEND DEVS
+import { Simulation } from "./utils/simulator"
 
 export default function App() {
   const [blockSize, setBlockSize] = useState(2) // 2, 4, 8, 16
@@ -38,11 +38,17 @@ export default function App() {
   }
 
   // Steps come from ACCESSES (src/utils/accesses.ts). Final Snapshot applies every step at once.
-  // const accesses; = call the function here that will return the built access table 
-  const totalSteps = submitted ? ACCESSES.length : 0
+ const accesses = useMemo(() => {
+  if (!submitted) return []
+  return new Simulation(
+    submitted.numBlocks,
+    submitted.replacement
+  ).simulate(submitted.sequence)
+}, [submitted])
+  const totalSteps = submitted ? accesses.length : 0
   const shownSteps = submitted?.selectedTrace === "Step-By-Step" ? step : totalSteps
-  const shownAccesses = ACCESSES.slice(0, shownSteps)
-  const current = shownSteps > 0 ? ACCESSES[shownSteps - 1] : null // latest step shown
+  const shownAccesses = accesses.slice(0, shownSteps)
+  const current = shownSteps > 0 ? accesses[shownSteps - 1] : null // latest step shown
   const stats = submitted ? computeStats(shownAccesses, submitted.blockSize, submitted.readPolicy) : null // updates every step
   const statusLabel = { miss: "Miss", hit: "Hit", replace: "Replace" }
   const traceLog = shownAccesses.map((a, i) => `Step ${i + 1}: ${statusLabel[a.status]} block ${a.memoryBlock} → cache block ${a.cacheBlock}`) // OPTIONAL TO DO: revise this if you think iba dapat format nung log 
