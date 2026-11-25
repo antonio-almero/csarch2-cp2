@@ -89,7 +89,8 @@ export class Simulation {
         const accessResults : Access = {
             memoryBlock : memoryBlock, 
             cacheBlock : 0,
-            status : 'hit'
+            status : 'hit',
+            ages : []
         };
         // Index of the cache block holding memoryBlock, or -1 if not cached.
         const cacheIdx = this.searchCache(memoryBlock);
@@ -115,6 +116,8 @@ export class Simulation {
             accessResults.cacheBlock = cacheIdx;
             this.cache[cacheIdx].resetAge();
         }
+
+        accessResults.ages = this.cache.map(cb => cb.getMemoryBlock() === null ? null : cb.getAge());
         return accessResults;
     } 
 

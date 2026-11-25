@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 
 import { Header } from "./components/Header"
 import { VariableSlider } from "./components/VariableSlider" 
@@ -60,6 +60,12 @@ export default function App() {
       tag: String(a.memoryBlock),
       words: Array.from({ length: submitted.blockSize }, (_, w) => hexWord(a.memoryBlock * submitted.blockSize + w)),
     }
+  }
+
+  if (current) {
+    current.ages.forEach((age, i) => {
+      if (age !== null && cacheData[i]) cacheData[i].age = String(age)
+    })
   }
 
   return (
