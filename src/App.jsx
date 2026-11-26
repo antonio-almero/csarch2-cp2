@@ -176,8 +176,8 @@ export default function App() {
                 <p className="text-xs">Total Memory Accesses: {stats.total}</p>
                 <p className="text-xs">Cache Hit Count: {stats.hits}</p>
                 <p className="text-xs">Cache Miss Count: {stats.misses}</p>
-                <p className="text-xs">Cache Hit Rate: {stats.hitRate.toFixed(2)}%</p>
-                <p className="text-xs">Cache Miss Rate: {stats.missRate.toFixed(2)}%</p>
+                <p className="text-xs">Cache Hit Rate: {(stats.hitRate * 100).toFixed(2)}%</p>
+                <p className="text-xs">Cache Miss Rate: {(stats.missRate * 100).toFixed(2)}%</p>
                 <p className="text-xs">Average Memory Access Time: {stats.averageTime.toFixed(2)} ns</p>
                 <p className="text-xs">Total Memory Access Time: {stats.totalTime} ns</p>
               </div>
