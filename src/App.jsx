@@ -52,7 +52,7 @@ export default function App() {
   const shownSteps = submitted?.selectedTrace === "Step-By-Step" ? step : totalSteps
   const shownAccesses = accesses.slice(0, shownSteps)
   const current = shownSteps > 0 ? accesses[shownSteps - 1] : null // latest step shown
-  const stats = submitted ? computeStats(shownAccesses, submitted.blockSize, submitted.readPolicy) : null // updates every step
+  const stats = submitted ? computeStats(shownAccesses, submitted.blockSize, submitted.readPolicy, submitted.accessTime, submitted.writeTime) : null // updates every step
   const statusLabel = { miss: "Miss", hit: "Hit", replace: "Replace" }
   const traceLog = shownAccesses.map((a, i) => `Step ${i + 1}: ${statusLabel[a.status]} block ${a.memoryBlock} → cache block ${a.cacheBlock}`) // OPTIONAL TO DO: revise this if you think iba dapat format nung log 
 
