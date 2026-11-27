@@ -10,7 +10,7 @@ export function VariableSwitches({ left, right, onChange }: { left: string; righ
   };
 
   return (
-    <div className="flex items-center gap-3 text-xl">
+    <div className="flex items-center gap-2 text-xl">
       <span className={`w-12 text-right ${isOn ? "text-gray-400" : "font-bold"}`}>{left}</span>
       <button
         type="button"

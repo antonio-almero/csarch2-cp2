@@ -9,12 +9,15 @@ import { MemoryBlocks, hexWord } from "./components/MemoryBlocks"
 import { AccessArrow } from "./components/AccessArrow"
 import { computeStats } from "./utils/stats"
 import { Simulation } from "./utils/simulator"
+import { TimeAccessInputs } from "./components/TimeAccessInputs"
 
 export default function App() {
   const [blockSize, setBlockSize] = useState(2) // 2, 4, 8, 16
   const [numBlocks, setNumBlocks] = useState(4) // 4, 8, 16
   const [readPolicy, setReadPolicy] = useState("LT") // LT or NLT
   const [replacement, setReplacement] = useState("LRU") // MRU or MRU
+  const [accessTime, setAccessTime] = useState(0) // LT or NLT
+  const [writeTime, setWriteTime] = useState(0) // MRU or MRU
   const [sequence, setSequence] = useState([]) // Array of Number representing the sequence of memory accesses
   const [testType, setTestType] = useState("Sequential") // Sequential, Mid-Repeat, Random, Custom
   const [submitted, setSubmitted] = useState(null) // USE THIS OBJECT WHEN WORKING WITH BACKEND LOGIC: The object containing BlockSize, NumBlocks, ReadPolicy, Replacement, Sequence, TestType
@@ -32,7 +35,7 @@ export default function App() {
   }
 
   const handleSubmit = () => {
-    setSubmitted({ blockSize, numBlocks, readPolicy, replacement, testType, sequence, selectedTrace })
+    setSubmitted({ blockSize, numBlocks, accessTime, writeTime, readPolicy, replacement, testType, sequence, selectedTrace })
     setStep(0)
     console.log("Submitted Inputs:", submitted)
   }
@@ -73,9 +76,13 @@ export default function App() {
       <Header/>
       <main className="flex flex-col gap-8 p-14">
         <div className="flex flex-row justify-between items-center w-full gap-2 rounded-md border-[#000080]/25 border-2 p-4">
-          <div className="gap-4 flex flex-row justify-between items-center w-full">
+          <div className="gap-4 flex flex-col justify-between items-center w-full">
             <VariableSlider label="Block Size" onChange={changed(setBlockSize)} />
             <VariableSlider label="# Cache Blocks" onChange={changed(setNumBlocks)} />
+          </div>
+          <div className="gap-4 flex flex-col justify-between items-center w-full">
+            <TimeAccessInputs label="Access Time" name={"Access Time"} onChange={changed(setAccessTime)}/>
+            <TimeAccessInputs label="Write Time" name={"Write Time"} onChange={changed(setWriteTime)}/>
           </div>
           <div className="flex flex-col justify-between items-center gap-2 w-full">
             <h2 className="text-xl font-semibold">Full Associative</h2>
@@ -138,7 +145,8 @@ export default function App() {
                     </button>
                   </div>
                 )}
-                <div className="relative flex w-full flex-1 flex-row items-start gap-24">
+                <div className="relative flex w-full flex-1 flex-row items-start gap-12">
+                  <img src="/public/cpu_chip.jpg" width={20} height={20}></img>
                   <CacheBlocks
                     blockSize={submitted.blockSize}
                     numBlocks={submitted.numBlocks}
@@ -162,25 +170,29 @@ export default function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 rounded-md border-[#000080]/25 border-2 p-4"> { /* SUBMITTED */}
-                <h2 className="text-sm font-semibold">Submitted Inputs</h2>
-                <p className="text-xs">Block Size: {submitted.blockSize} words</p>
-                <p className="text-xs"># Cache Blocks: {submitted.numBlocks}</p>
-                <p className="text-xs">Read Policy: {submitted.readPolicy}</p>
-                <p className="text-xs">Replacement: {submitted.replacement}</p>
-                <p className="text-xs">Test Case: {submitted.testType}</p>
-                <p className="text-xs">Sequence ({submitted.sequence.length} accesses): {submitted.sequence.join(", ")}</p>
-                <p className="text-xs">Simulation Type: {submitted.selectedTrace}</p>
-
-                <h2 className="text-sm font-semibold">Statistics</h2>
-                <p className="text-xs">Total Memory Accesses: {stats.total}</p>
-                <p className="text-xs">Cache Hit Count: {stats.hits}</p>
-                <p className="text-xs">Cache Miss Count: {stats.misses}</p>
-                <p className="text-xs">Cache Hit Rate: {(stats.hitRate * 100).toFixed(2)}%</p>
-                <p className="text-xs">Cache Miss Rate: {(stats.missRate * 100).toFixed(2)}%</p>
-                <p className="text-xs">Average Memory Access Time: {stats.averageTime.toFixed(2)} ns</p>
-                <p className="text-xs">Total Memory Access Time: {stats.totalTime} ns</p>
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 rounded-md border-[#000080]/25 border-2 p-4"> { /* SUBMITTED */}
+                  <h2 className="text-sm font-semibold">Submitted Inputs</h2>
+                  <p className="text-xs">Block Size: {submitted.blockSize} words</p>
+                  <p className="text-xs"># Cache Blocks: {submitted.numBlocks}</p>
+                  <p className="text-xs">Read Policy: {submitted.readPolicy}</p>
+                  <p className="text-xs">Replacement: {submitted.replacement}</p>
+                  <p className="text-xs">Test Case: {submitted.testType}</p>
+                  <p className="text-xs">Sequence ({submitted.sequence.length} accesses): {submitted.sequence.join(", ")}</p>
+                  <p className="text-xs">Simulation Type: {submitted.selectedTrace}</p>
+                </div>
+                <div className="flex flex-col flex-1 min-w-0 break-words justify-start p-2 gap-2 rounded-md border-[#000080]/25 border-2 p-4"> { /* SUBMITTED */}
+                  <h2 className="text-sm font-semibold">Statistics</h2>
+                  <p className="text-xs">Total Memory Accesses: {stats.total}</p>
+                  <p className="text-xs">Cache Hit Count: {stats.hits}</p>
+                  <p className="text-xs">Cache Miss Count: {stats.misses}</p>
+                  <p className="text-xs">Cache Hit Rate: {(stats.hitRate * 100).toFixed(2)}%</p>
+                  <p className="text-xs">Cache Miss Rate: {(stats.missRate * 100).toFixed(2)}%</p>
+                  <p className="text-xs">Average Memory Access Time: {stats.averageTime.toFixed(2)} ns</p>
+                  <p className="text-xs">Total Memory Access Time: {stats.totalTime} ns</p>
+                </div>
               </div>
+              
             </section>
           )}  
       </main>
